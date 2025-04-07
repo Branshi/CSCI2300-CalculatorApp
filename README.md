@@ -22,6 +22,7 @@ Caltrix utilizes the **Model-View-Controller (MVC)** architecture, ensuring a cl
 Caltrix comes with four pre-defined themes which can be easily found online:
 
 - **Everforest - Light**
+    Note: upon finishing the application add images of each theme to each listed theme.
 - **Everforest - Dark**
 - **Catppuccin - Latte**
 - **Catppuccin - Frappe**
@@ -47,7 +48,7 @@ Caltrix comes with four pre-defined themes which can be easily found online:
   Implemented using stack and queue data structures to manage input operations.
 
 - **Clear/Clear All Buttons:**  
-  - **Clear:** Clears the display view.  
+  - **Clear:** Clears the active view.  
   - **Clear All:** Clears the output view.
 
 - **Persistent User Data:**  
