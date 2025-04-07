@@ -4,7 +4,14 @@
   <h1>Caltrix</h1>
   <p>A minimal calculator built with Java.</p>
 
-  <a href="">![Java](https://img.shields.io/badge/Java-23%2B-purple) ![Gradle](https://img.shields.io/badge/Gradle-8.1%2B-blue)</a>
+  <div style="display: flex; justify-content: center; gap: 10px;">
+    <a href="" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/Java-23%2B-purple" alt="Java">
+    </a>
+    <a href="" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/Gradle-8.1%2B-blue" alt="Gradle">
+    </a>
+  </div>
 
 </div>
 
