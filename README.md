@@ -1,6 +1,6 @@
-    Note: Add logo
 <div align="center">
-
+    
+  <img src="./app/src/main/resources/logo_images/blue-hashtag-design.png" alt="Caltrix Logo"/>
   <h1>Caltrix</h1>
   <p>A minimal calculator built with Java.</p>
 
@@ -9,10 +9,9 @@
     <a href="https://github.com/gradle/gradle" style="text-decoration: none;"><img src="https://img.shields.io/badge/Gradle-8.1%2B-blue" alt="Gradle"></a>
   </div>
 
+ [Features](#features) • [Themes](#themes) • [Design](#design) • [Credits](#credits)
 </div>
 
-
-    Note: add links
 
 ## Overview
 
