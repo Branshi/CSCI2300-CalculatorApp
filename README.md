@@ -1,4 +1,6 @@
 # Caltrix
+![Static Badge](https://img.shields.io/badge/Java-23%2B-purple)
+![Static Badge](https://img.shields.io/badge/Gradle-8.1%2B-blue)
 
 Caltrix is a Desmos-like application designed to provide an intuitive and powerful interface for mathematical expression parsing and evaluation. The app supports a variety of themes, customizable settings, and an organized multi-view design to enhance user experience.
 
@@ -21,8 +23,9 @@ Caltrix utilizes the **Model-View-Controller (MVC)** architecture, ensuring a cl
 
 Caltrix comes with four pre-defined themes which can be easily found online:
 
-- **Everforest - Light**
     Note: upon finishing the application add images of each theme to each listed theme.
+
+- **Everforest - Light**
 - **Everforest - Dark**
 - **Catppuccin - Latte**
 - **Catppuccin - Frappe**
