@@ -1,6 +1,6 @@
 <div align="center">
     
-  <img src="./app/src/main/resources/logo_images/blue-hashtag-design.png" alt="Caltrix Logo"/>
+  <img src="./app/src/main/resources/logo_images/blue-hashtag-design.png" alt="Caltrix Logo" style="width:30%;height:auto;"/>
   <h1>Caltrix</h1>
   <p>A minimal calculator built with Java.</p>
 
