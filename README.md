@@ -1,8 +1,17 @@
-# Caltrix
-![Static Badge](https://img.shields.io/badge/Java-23%2B-purple)
-![Static Badge](https://img.shields.io/badge/Gradle-8.1%2B-blue)
+    Note: Add logo
+<div align="center">
+  <h1>Caltrix</h1>
+  <p>A minimal Desmos-like Calculator built with Java.</p>
+  <a href="">![Java Badge](https://img.shields.io/badge/Java-23%2B-purple)</a>
+  <a href="">![Gradle Badge](https://img.shields.io/badge/Gradle-8.1%2B-blue)</a>
+</div>
 
-Caltrix is a Desmos-like application designed to provide an intuitive and powerful interface for mathematical expression parsing and evaluation. The app supports a variety of themes, customizable settings, and an organized multi-view design to enhance user experience.
+
+    Note: add links
+
+## Overview
+
+Caltrix is an application designed to provide an intuitive and powerful interface for mathematical expression parsing and evaluation. The app supports a variety of themes, customizable settings, and an organized multi-view design to enhance user experience.
 
 ---
 
