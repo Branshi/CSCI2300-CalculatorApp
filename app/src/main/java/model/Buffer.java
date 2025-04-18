@@ -5,22 +5,15 @@ public class Buffer {
   public static final int IN = 0;
   public static final int OUT = 1;
 
-  String[] content;
+  String content;
   boolean active;
 
   public Buffer() {
-    content = new String[2];
     active = false;
   }
 
   public Buffer(String input) {
-    content[IN] = input;
-    active = false;
-  }
-
-  public Buffer(String input, String output) {
-    content[IN] = input;
-    content[OUT] = output;
+    content = input;
     active = false;
   }
 
@@ -32,7 +25,11 @@ public class Buffer {
     return active;
   }
 
-  public String[] getContent() {
+  public String getContent() {
     return content;
+  }
+
+  public void setContent(String text) {
+    content = text;
   }
 }

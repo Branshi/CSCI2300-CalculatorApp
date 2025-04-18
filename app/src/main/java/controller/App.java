@@ -5,7 +5,7 @@ import view.MainView;
 
 public class App {
 
-  public void main(String[] args) {
+  public static void main(String[] args) {
     // Bootstrap
     MainView appView = new MainView();
     State appState = new State();
