@@ -64,6 +64,10 @@ public class MainView extends JFrame {
     return pan;
   }
 
+  public IOPanel getIoPanel(int ind) {
+    return IoPanels.get(ind);
+  }
+
   private void reinitDisplay() {
 
     displayPanel.removeAll();

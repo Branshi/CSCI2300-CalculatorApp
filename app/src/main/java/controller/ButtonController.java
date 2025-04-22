@@ -7,6 +7,7 @@ import model.State;
 import view.IOPanel;
 import view.InputButton;
 import view.MainView;
+import view.OutputPane;
 
 public class ButtonController implements ActionListener {
   private final InputButton button;
@@ -38,12 +39,28 @@ public class ButtonController implements ActionListener {
     Buffer buf = model.getBuffers().get(activeIndex);
     String seq = button.getSequence();
     String old = activePanel.getInputPane().getText();
-    String next = old + seq;
-
+    String next;
+    if (seq.equals("ans")) {
+      next = old + handleAnswer();
+    } else {
+      next = old + seq;
+    }
     // 3) push the new content back into your Buffer
     buf.setContent(next);
 
     // 4) append the button text to the input field
     activePanel.getInputPane().setText(next);
+  }
+
+  private String handleAnswer() {
+    int currentInd = model.getActiveBufIndex();
+    int previousInd = currentInd - 1;
+    try {
+      model.getBuffers().get(previousInd);
+      OutputPane out = view.getIoPanel(previousInd).getOutputPane();
+      return out.getText();
+    } catch (IndexOutOfBoundsException e) {
+      return "";
+    }
   }
 }
