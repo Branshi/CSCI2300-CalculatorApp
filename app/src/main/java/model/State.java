@@ -13,9 +13,9 @@ public class State {
     largeFont = false;
   }
 
-  public Buffer createBuffer() {
+  public Buffer createBuffer(int index) {
     Buffer buf = new Buffer();
-    bufferList.add(buf);
+    bufferList.add(index, buf);
     return buf;
   }
 

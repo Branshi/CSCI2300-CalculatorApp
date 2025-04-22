@@ -5,36 +5,34 @@ import java.awt.event.ActionListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import model.Buffer;
-import view.InputPane;
-import view.OutputPane;
+import view.IOPanel;
+
 // wherever your eval method lives
 
 public class PaneController implements DocumentListener, ActionListener {
-  private final InputPane inField;
-  private final OutputPane outField;
+  private final IOPanel panel;
   private final Buffer buffer;
 
-  public PaneController(Buffer buf, InputPane in, OutputPane out) {
+  public PaneController(Buffer buf, IOPanel pan) {
     this.buffer = buf;
-    this.inField = in;
-    this.outField = out;
+    this.panel = pan;
 
     // 1) Listen for any text change
-    inField.getDocument().addDocumentListener(this);
+    panel.getInputPane().getDocument().addDocumentListener(this);
 
     // 2) Listen for “Enter pressed”
-    inField.addActionListener(this);
+    panel.getInputPane().addActionListener(this);
   }
 
   /** Shared evaluation logic */
   private void updateOutput() {
-    String text = inField.getText();
+    String text = panel.getInputPane().getText();
     buffer.setContent(text);
     try {
       String out = String.valueOf(Evaluate.eval(buffer.getContent()));
-      outField.setText(out);
+      panel.getOutputPane().setText(out);
     } catch (IllegalArgumentException ex) {
-      outField.setText(ex.getMessage());
+      panel.getOutputPane().setText(ex.getMessage());
     }
   }
 
