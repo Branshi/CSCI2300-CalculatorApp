@@ -5,17 +5,23 @@ import java.awt.event.ActionListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import model.Buffer;
+import model.State;
 import view.IOPanel;
+import view.MainView;
 
 // wherever your eval method lives
 
 public class PaneController implements DocumentListener, ActionListener {
   private final IOPanel panel;
   private final Buffer buffer;
+  private final MainView view;
+  private final State model;
 
-  public PaneController(Buffer buf, IOPanel pan) {
+  public PaneController(Buffer buf, IOPanel pan, State m, MainView v) {
     this.buffer = buf;
     this.panel = pan;
+    this.model = m;
+    this.view = v;
 
     // 1) Listen for any text change
     panel.getInputPane().getDocument().addDocumentListener(this);
@@ -49,15 +55,24 @@ public class PaneController implements DocumentListener, ActionListener {
 
   @Override
   public void changedUpdate(DocumentEvent e) {
-    // plain‐text fields don’t fire this, but we implement anyway
     updateOutput();
   }
 
   // ActionListener → fires when user presses Enter
   @Override
   public void actionPerformed(ActionEvent e) {
-    // if you want special Enter logic, do it here;
-    // otherwise, you can just call updateOutput() too:
-    updateOutput();
+    int ind = model.getActiveBufIndex();
+    if (ind >= 0) {
+      model.deactivateBuffer(ind);
+      view.deactivate(ind);
+    }
+
+    int newIdx = (ind < 0 ? 0 : ind + 1);
+    Buffer newBuf = model.createBuffer(newIdx);
+    model.activateBuffer(newIdx);
+    IOPanel newPan = view.addIoPanel(newIdx);
+    view.activate(newIdx);
+
+    new PaneController(newBuf, newPan, model, view);
   }
 }

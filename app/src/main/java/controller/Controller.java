@@ -22,10 +22,10 @@ public class Controller implements ActionListener {
 
   public void initInputPaneController() {
     Buffer buf = this.model.createBuffer(0);
-    buf.toggleActive();
+    buf.setActive(true);
     IOPanel pan = this.view.addIoPanel(0);
     this.view.activate(0);
-    new PaneController(buf, pan);
+    new PaneController(buf, pan, model, view);
   }
 
   public void initButtonController() {

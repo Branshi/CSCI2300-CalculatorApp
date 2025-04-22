@@ -17,8 +17,8 @@ public class Buffer {
     active = false;
   }
 
-  public void toggleActive() {
-    active = !active;
+  public void setActive(boolean act) {
+    active = act;
   }
 
   public boolean getActive() {
