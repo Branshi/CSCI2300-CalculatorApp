@@ -83,12 +83,12 @@ public class MainView extends JFrame {
 
   public void activate(int ind) {
     IOPanel panelActive = IoPanels.get(ind);
-    panelActive.setBackground(Color.RED);
+    panelActive.activate();
   }
 
   public void deactivate(int ind) {
     IOPanel panelInactive = IoPanels.get(ind);
-    panelInactive.setBackground(Color.WHITE);
+    panelInactive.deactivate();
   }
 
   public ArrayList<IOPanel> getIoPanels() {

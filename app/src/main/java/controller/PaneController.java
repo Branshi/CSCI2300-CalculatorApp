@@ -1,17 +1,22 @@
 package controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import model.Buffer;
 import model.State;
 import view.IOPanel;
+import view.InputPane;
 import view.MainView;
 
 // wherever your eval method lives
 
-public class PaneController implements DocumentListener, ActionListener {
+public class PaneController implements DocumentListener, ActionListener, FocusListener {
   private final IOPanel panel;
   private final Buffer buffer;
   private final MainView view;
@@ -28,6 +33,7 @@ public class PaneController implements DocumentListener, ActionListener {
 
     // 2) Listen for “Enter pressed”
     panel.getInputPane().addActionListener(this);
+    panel.getInputPane().addFocusListener(this);
   }
 
   /** Shared evaluation logic */
@@ -72,7 +78,27 @@ public class PaneController implements DocumentListener, ActionListener {
     model.activateBuffer(newIdx);
     IOPanel newPan = view.addIoPanel(newIdx);
     view.activate(newIdx);
-
+    SwingUtilities.invokeLater(
+        () -> {
+          newPan.getInputPane().requestFocusInWindow();
+        });
     new PaneController(newBuf, newPan, model, view);
+  }
+
+  @Override
+  public void focusGained(FocusEvent e) {
+    // activate focused buffer and panel
+    panel.activate();
+    buffer.setActive(true);
+  }
+
+  @Override
+  public void focusLost(FocusEvent e) {
+    // deactivate unfocused buffer and panel
+    Component gained = e.getOppositeComponent();
+    if (gained instanceof InputPane) {
+      panel.deactivate();
+      buffer.setActive(false);
+    }
   }
 }
