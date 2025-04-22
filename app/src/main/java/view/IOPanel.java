@@ -26,4 +26,12 @@ public class IOPanel extends JPanel {
   public OutputPane getOutputPane() {
     return output;
   }
+
+  public void activate() {
+    this.setBackground(Color.RED);
+  }
+
+  public void deactivate() {
+    this.setBackground(Color.WHITE);
+  }
 }
