@@ -1,14 +1,20 @@
 package controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import model.Buffer;
 import model.State;
 import view.IOPanel;
+import view.InputPane;
 import view.MainView;
 
+<<<<<<< HEAD
 /**
  * Controller for managing I/O panel interactions in the calculator application.
  * Handles both text input changes (via DocumentListener) and Enter key presses (via ActionListener).
@@ -26,6 +32,15 @@ public class PaneController implements DocumentListener, ActionListener {
     
     /** The application state model */
     private final State model;
+=======
+// wherever your eval method lives
+
+public class PaneController implements DocumentListener, ActionListener, FocusListener {
+  private final IOPanel panel;
+  private final Buffer buffer;
+  private final MainView view;
+  private final State model;
+>>>>>>> e897d5d91c052598a014703145d845342cec5926
 
     /**
      * Constructs a new PaneController and sets up listeners.
@@ -44,6 +59,7 @@ public class PaneController implements DocumentListener, ActionListener {
         // 1) Listen for any text change
         panel.getInputPane().getDocument().addDocumentListener(this);
 
+<<<<<<< HEAD
         // 2) Listen for "Enter pressed"
         panel.getInputPane().addActionListener(this);
     }
@@ -116,3 +132,78 @@ public class PaneController implements DocumentListener, ActionListener {
         new PaneController(newBuf, newPan, model, view);
     }
 }
+=======
+    // 2) Listen for “Enter pressed”
+    panel.getInputPane().addActionListener(this);
+    panel.getInputPane().addFocusListener(this);
+  }
+
+  /** Shared evaluation logic */
+  private void updateOutput() {
+    String text = panel.getInputPane().getText();
+    buffer.setContent(text);
+    try {
+      String out = String.valueOf(Evaluate.eval(buffer.getContent()));
+      panel.getOutputPane().setText(out);
+    } catch (IllegalArgumentException ex) {
+      panel.getOutputPane().setText(ex.getMessage());
+    }
+  }
+
+  // DocumentListener → fires after insert or remove
+  @Override
+  public void insertUpdate(DocumentEvent e) {
+    updateOutput();
+  }
+
+  @Override
+  public void removeUpdate(DocumentEvent e) {
+    updateOutput();
+  }
+
+  @Override
+  public void changedUpdate(DocumentEvent e) {
+    updateOutput();
+  }
+
+  // ActionListener → fires when user presses Enter
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    int ind = model.getActiveBufIndex();
+    if (ind >= 0) {
+      model.deactivateBuffer(ind);
+      view.deactivate(ind);
+    }
+
+    int newIdx = (ind < 0 ? 0 : ind + 1);
+    Buffer newBuf = model.createBuffer(newIdx);
+    model.activateBuffer(newIdx);
+    IOPanel newPan = view.addIoPanel(newIdx);
+    view.activate(newIdx);
+    SwingUtilities.invokeLater(
+        () -> {
+          newPan.getInputPane().requestFocusInWindow();
+        });
+    new PaneController(newBuf, newPan, model, view);
+  }
+
+  @Override
+  public void focusGained(FocusEvent e) {
+    // activate focused buffer and panel
+    model.deactivateBuffers();
+    view.deactivatePanels();
+    buffer.setActive(true);
+    panel.activate();
+  }
+
+  @Override
+  public void focusLost(FocusEvent e) {
+    // deactivate unfocused buffer and panel
+    Component gained = e.getOppositeComponent();
+    if (gained instanceof InputPane) {
+      panel.deactivate();
+      buffer.setActive(false);
+    }
+  }
+}
+>>>>>>> e897d5d91c052598a014703145d845342cec5926

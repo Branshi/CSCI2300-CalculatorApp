@@ -17,6 +17,7 @@ public class State {
     /** Flag indicating whether large font should be used for display */
     private boolean largeFont;
 
+<<<<<<< HEAD
     /**
      * Constructs a new State with default settings.
      * Initializes:
@@ -28,6 +29,37 @@ public class State {
         bufferList = new ArrayList<Buffer>();
         degreeMode = true;
         largeFont = false;
+=======
+  public State() {
+    bufferList = new ArrayList<Buffer>();
+    degreeMode = true;
+    largeFont = false;
+  }
+
+  public Buffer createBuffer(int index) {
+    Buffer buf = new Buffer();
+    bufferList.add(index, buf);
+    return buf;
+  }
+
+  public void deactivateBuffers() {
+    for (Buffer buf : bufferList) {
+      buf.setActive(false);
+    }
+  }
+
+  public void deactivateBuffer(int index) {
+    bufferList.get(index).setActive(false);
+  }
+
+  public void activateBuffer(int index) {
+    bufferList.get(index).setActive(true);
+  }
+
+  public int getActiveBufIndex() {
+    for (int i = 0; i < bufferList.size(); ++i) {
+      if (bufferList.get(i).getActive() == true) return i;
+>>>>>>> e897d5d91c052598a014703145d845342cec5926
     }
 
     /**

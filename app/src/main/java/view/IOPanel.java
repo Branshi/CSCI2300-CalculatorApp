@@ -40,6 +40,7 @@ public class IOPanel extends JPanel {
         return input;
     }
 
+<<<<<<< HEAD
     /**
      * Returns the output pane component of this panel.
      * 
@@ -48,4 +49,21 @@ public class IOPanel extends JPanel {
     public OutputPane getOutputPane() {
         return output;
     }
+=======
+  public InputPane getInputPane() {
+    return input;
+  }
+
+  public OutputPane getOutputPane() {
+    return output;
+  }
+
+  public void activate() {
+    this.setBackground(Color.RED);
+  }
+
+  public void deactivate() {
+    this.setBackground(Color.WHITE);
+  }
+>>>>>>> e897d5d91c052598a014703145d845342cec5926
 }
