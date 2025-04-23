@@ -1,3 +1,4 @@
+
 package view;
 
 import java.awt.*;
@@ -15,47 +16,72 @@ public class MainView extends JFrame {
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     Container cp = getContentPane();
     cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
-    // Initlize App Sections
+
+    // Initialize App Sections
     initDisplayPanel();
     initButtonPanel();
-    // Add Components
+
+    // Add components to content pane
     cp.add(displayPanel);
     cp.add(buttonPanel);
+
     pack();
     setLocationRelativeTo(null);
     this.setVisible(true);
   }
 
   private void initDisplayPanel() {
-    // Set-Uo displayPanel
     displayPanel = new JPanel();
     displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
-    // Setting up IoPanels
     IoPanels = new ArrayList<IOPanel>();
   }
 
   private void initButtonPanel() {
-    // Set-Up buttonPanel
+    // Outer container for all button sections
     buttonPanel = new JPanel();
-    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-    numberPanel = new JPanel();
-    int numberPanelRows = 4;
-    int numberPanelColumns = 4;
-    numberPanel.setLayout(new GridLayout(numberPanelRows, numberPanelColumns));
-    for (int i = 1; i <= 16; i++) {
-      if ((i / 4 == 0) && (i % 4 != 0)) numberPanel.add(new InputButton(String.valueOf(i + 6)));
-      if ((i / 4 == 1) && (i % 4 != 0)) numberPanel.add(new InputButton(String.valueOf(i - 1)));
-      if ((i / 4 == 2) && (i % 4 != 0)) numberPanel.add(new InputButton(String.valueOf(i - 8)));
-      if (i == 13) numberPanel.add(new InputButton(String.valueOf("0")));
-      if (i == 14) numberPanel.add(new InputButton(String.valueOf(".")));
-      if (i == 15) numberPanel.add(new InputButton(String.valueOf("ans")));
-      if (i == 4) numberPanel.add(new InputButton("/"));
-      if (i == 8) numberPanel.add(new InputButton("x"));
-      if (i == 12) numberPanel.add(new InputButton("-"));
-      if (i == 16) numberPanel.add(new InputButton("+"));
+    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+  
+    // 🌙 Dark Mode Toggle Button
+    JToggleButton darkModeToggle = new JToggleButton("🌙 Switch Color Mode");
+    darkModeToggle.setAlignmentX(Component.CENTER_ALIGNMENT);
+    darkModeToggle.addActionListener(e -> toggleDarkMode(darkModeToggle.isSelected()));
+    buttonPanel.add(darkModeToggle);
+  
+    // 🔢 Function Panel (Desmos-style emoji/math buttons)
+    JPanel funcPanel = new JPanel(new GridLayout(4, 3, 5, 5));
+    String[] funcButtons = {
+      "x²", "xʸ", "|x|",
+      "√", "ⁿ√", "π",
+      "sin", "cos", "tan",
+      "(", ")", ","
+    };
+    for (String label : funcButtons) {
+      funcPanel.add(new InputButton(label));
     }
-    buttonPanel.add(numberPanel);
+  
+    // 🔢 Number Panel
+    numberPanel = new JPanel();
+    numberPanel.setLayout(new GridLayout(4, 4, 5, 5));
+    String[] labels = {
+      "7", "8", "9", "/",
+      "4", "5", "6", "x",
+      "1", "2", "3", "-",
+      "0", ".", "ans", "+"
+    };
+    for (String label : labels) {
+      numberPanel.add(new InputButton(label));
+    }
+  
+    // Combine funcPanel and numberPanel horizontally
+    JPanel combinedPanel = new JPanel();
+    combinedPanel.setLayout(new BoxLayout(combinedPanel, BoxLayout.X_AXIS));
+    combinedPanel.add(funcPanel);
+    combinedPanel.add(Box.createRigidArea(new Dimension(10, 0))); // spacing
+    combinedPanel.add(numberPanel);
+  
+    buttonPanel.add(combinedPanel);
   }
+  
 
   public IOPanel addIoPanel(int ind) {
     IOPanel pan = new IOPanel();
@@ -65,16 +91,39 @@ public class MainView extends JFrame {
   }
 
   private void reinitDisplay() {
-
     displayPanel.removeAll();
-
     for (int i = 0; i < IoPanels.size(); ++i) {
       displayPanel.add(IoPanels.get(i));
     }
-
     displayPanel.revalidate();
     displayPanel.repaint();
     pack();
+  }
+
+  public void toggleDarkMode(boolean enabled) {
+    Color bg = enabled ? new Color(34, 34, 34) : Color.WHITE;
+    Color fg = enabled ? Color.WHITE : Color.BLACK;
+
+    getContentPane().setBackground(bg);
+    displayPanel.setBackground(bg);
+    buttonPanel.setBackground(bg);
+    numberPanel.setBackground(bg);
+
+    for (Component c : numberPanel.getComponents()) {
+      if (c instanceof JButton) {
+        c.setBackground(enabled ? new Color(60, 60, 60) : Color.WHITE);
+        c.setForeground(fg);
+      }
+    }
+
+    for (IOPanel panel : IoPanels) {
+      panel.setBackground(bg);
+      panel.getInputPane().setBackground(enabled ? new Color(50, 50, 50) : Color.WHITE);
+      panel.getInputPane().setForeground(fg);
+      panel.getOutputPane().setForeground(fg);
+    }
+
+    repaint();
   }
 
   public JPanel getNumberPanel() {

@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import model.Buffer;
 import model.State;
 import view.IOPanel;
@@ -36,7 +37,31 @@ public class ButtonController implements ActionListener {
     IOPanel activePanel = view.getIoPanels().get(activeIndex);
 
     Buffer buf = model.getBuffers().get(activeIndex);
-    String seq = button.getSequence();
+    // String seq = button.getSequence();
+    String seq;
+switch (button.getSequence()) {
+  case "π":
+    seq = "3.14159";
+    break;
+  case "√":
+    seq = "sqrt(";
+    break;
+  case "ⁿ√":
+    seq = "root(";
+    break;
+  case "x²":
+    seq = "^2";
+    break;
+  case "xʸ":
+    seq = "^";
+    break;
+  case "|x|":
+    seq = "abs(";
+    break;
+  default:
+    seq = button.getSequence();
+}
+
     String old = activePanel.getInputPane().getText();
     String next = old + seq;
 
