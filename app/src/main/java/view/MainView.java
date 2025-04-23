@@ -90,6 +90,10 @@ public class MainView extends JFrame {
     return pan;
   }
 
+  public IOPanel getIoPanel(int ind) {
+    return IoPanels.get(ind);
+  }
+
   private void reinitDisplay() {
     displayPanel.removeAll();
     for (int i = 0; i < IoPanels.size(); ++i) {
@@ -100,6 +104,7 @@ public class MainView extends JFrame {
     pack();
   }
 
+<<<<<<< HEAD
   public void toggleDarkMode(boolean enabled) {
     Color bg = enabled ? new Color(34, 34, 34) : Color.WHITE;
     Color fg = enabled ? Color.WHITE : Color.BLACK;
@@ -124,6 +129,12 @@ public class MainView extends JFrame {
     }
 
     repaint();
+=======
+  public void deactivatePanels() {
+    for (IOPanel pan : IoPanels) {
+      pan.deactivate();
+    }
+>>>>>>> 990db877ad62c4b2774266532dc954bdd48eb28c
   }
 
   public JPanel getNumberPanel() {

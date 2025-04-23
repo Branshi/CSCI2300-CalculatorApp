@@ -88,8 +88,10 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
   @Override
   public void focusGained(FocusEvent e) {
     // activate focused buffer and panel
-    panel.activate();
+    model.deactivateBuffers();
+    view.deactivatePanels();
     buffer.setActive(true);
+    panel.activate();
   }
 
   @Override

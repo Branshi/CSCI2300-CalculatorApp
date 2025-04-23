@@ -19,6 +19,12 @@ public class State {
     return buf;
   }
 
+  public void deactivateBuffers() {
+    for (Buffer buf : bufferList) {
+      buf.setActive(false);
+    }
+  }
+
   public void deactivateBuffer(int index) {
     bufferList.get(index).setActive(false);
   }
