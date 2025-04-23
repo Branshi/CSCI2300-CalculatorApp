@@ -81,6 +81,12 @@ public class MainView extends JFrame {
     pack();
   }
 
+  public void deactivatePanels() {
+    for (IOPanel pan : IoPanels) {
+      pan.deactivate();
+    }
+  }
+
   public JPanel getNumberPanel() {
     return numberPanel;
   }
