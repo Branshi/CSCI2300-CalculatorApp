@@ -42,6 +42,12 @@ public class State {
     return b;
   }
 
+  public void clearBuffers() {
+    bufferList.subList(0, bufferList.size() - 1).clear();
+    bufferList.get(0).setContent("");
+    bufferList.get(0).setActive(true);
+  }
+
   public void deactivateBuffers() {
     for (Buffer buf : bufferList) {
       buf.setActive(false);

@@ -18,6 +18,7 @@ public class Controller implements ActionListener {
     this.view = v;
     initInputPaneController();
     initButtonController();
+    initHeaderController();
   }
 
   public void initInputPaneController() {
@@ -34,6 +35,10 @@ public class Controller implements ActionListener {
         new ButtonController((InputButton) c, model, view);
       }
     }
+  }
+
+  public void initHeaderController() {
+    new HeaderController(model, view);
   }
 
   @Override

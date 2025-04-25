@@ -56,7 +56,7 @@ public class MainView extends JFrame {
       if (i == 12) numberPanel.add(new InputButton("-"));
       if (i == 16) numberPanel.add(new InputButton("+"));
     }
-    headerPanel.add(new JButton("clear"));
+    headerPanel.add(new JButton("clear all"));
     headerPanel.add(new JButton("undo"));
     headerPanel.add(new JButton("redo"));
     headerPanel.add(new JButton("deg"));
@@ -76,6 +76,13 @@ public class MainView extends JFrame {
     IOPanel pan = IoPanels.remove(ind);
     reinitDisplay();
     return pan;
+  }
+
+  public void clearIoPanels() {
+    IoPanels.subList(0, IoPanels.size() - 1).clear();
+    IoPanels.get(0).getInputPane().setText("");
+    IoPanels.get(0).activate();
+    reinitDisplay();
   }
 
   public IOPanel getIoPanel(int ind) {

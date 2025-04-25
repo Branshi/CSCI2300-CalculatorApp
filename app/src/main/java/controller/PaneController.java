@@ -7,6 +7,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -23,12 +24,23 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
   private final Buffer buffer;
   private final MainView view;
   private final State model;
+  private JButton clearButton;
 
   public PaneController(Buffer buf, IOPanel pan, State m, MainView v) {
     this.buffer = buf;
     this.panel = pan;
     this.model = m;
     this.view = v;
+
+    // Cache clear button
+    for (Component comp : view.getHeaderPanel().getComponents()) {
+      if (comp instanceof JButton) {
+        JButton button = (JButton) comp;
+        if (button.getText().equals("clear all") || button.getText().equals("clear")) {
+          this.clearButton = button;
+        }
+      }
+    }
 
     // 1) Listen for any text change
     panel.getInputPane().getDocument().addDocumentListener(this);
@@ -48,7 +60,7 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
                         || e.getKeyCode() == KeyEvent.VK_DELETE)
                     && panel.getInputPane().getText().isEmpty()) {
                   deleteThisLine();
-                  e.consume(); // don’t let the field try to delete “nothing”
+                  e.consume();
                 }
               }
             });
@@ -73,10 +85,19 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
     }
   }
 
+  private void updateClearButton(String text) {
+    if (text == null || text.isEmpty()) {
+      clearButton.setText("clear all");
+    } else {
+      clearButton.setText("clear");
+    }
+  }
+
   /** Shared evaluation logic */
   private void updateOutput() {
     String text = panel.getInputPane().getText();
     buffer.setContent(text);
+    this.updateClearButton(buffer.getContent());
     try {
       String out = String.valueOf(Evaluate.eval(buffer.getContent()));
       panel.getOutputPane().setText(out);
@@ -135,6 +156,7 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
     view.deactivatePanels();
     buffer.setActive(true);
     panel.activate();
+    this.updateClearButton(buffer.getContent());
   }
 
   @Override

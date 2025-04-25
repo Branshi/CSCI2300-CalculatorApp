@@ -26,14 +26,15 @@ public class HeaderController implements ActionListener {
     }
   }
 
-  // ActionListener → fires when user presses Enter
   @Override
   public void actionPerformed(ActionEvent e) {
     if (!(e.getSource() instanceof JButton)) return;
     JButton button = (JButton) e.getSource();
     switch (button.getText()) {
-      case "clear":
       case "clear all":
+        handleClearAll();
+        break;
+      case "clear":
         handleClear();
         break;
       case "deg":
@@ -51,6 +52,16 @@ public class HeaderController implements ActionListener {
     }
   }
 
+  private void handleClearAll() {
+    int index = model.getActiveBufIndex();
+    Buffer buf = model.getBuffers().get(index);
+
+    if (model.getBuffers().size() <= 1 || !buf.getContent().isEmpty()) return;
+
+    model.clearBuffers();
+    view.clearIoPanels();
+  }
+
   private void handleClear() {
     int index = model.getActiveBufIndex();
     Buffer buf = model.getBuffers().get(index);
@@ -59,9 +70,13 @@ public class HeaderController implements ActionListener {
     buf.setContent("");
   }
 
-  private void handleDegree() {}
+  private void handleDegree() {
+    model.setDegreeMode(true);
+  }
 
-  private void handleRadian() {}
+  private void handleRadian() {
+    model.setDegreeMode(false);
+  }
 
   private void handleRedo() {}
 
