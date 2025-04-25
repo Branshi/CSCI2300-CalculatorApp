@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -34,6 +36,41 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
     // 2) Listen for “Enter pressed”
     panel.getInputPane().addActionListener(this);
     panel.getInputPane().addFocusListener(this);
+
+    panel
+        .getInputPane()
+        .addKeyListener(
+            new KeyAdapter() {
+              @Override
+              public void keyPressed(KeyEvent e) {
+                // only when the field is empty
+                if ((e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+                        || e.getKeyCode() == KeyEvent.VK_DELETE)
+                    && panel.getInputPane().getText().isEmpty()) {
+                  deleteThisLine();
+                  e.consume(); // don’t let the field try to delete “nothing”
+                }
+              }
+            });
+  }
+
+  private void deleteThisLine() {
+    int idx = model.getActiveBufIndex();
+    if (idx <= 0) return;
+
+    // 1) remove model + view
+    model.removeBuffer(idx);
+    view.removeIoPanel(idx);
+
+    // 2) choose a new active index
+    int newIdx = Math.min(idx, model.getBuffers().size() - 1);
+    if (newIdx >= 0) {
+      model.activateBuffer(newIdx);
+      view.activate(newIdx);
+      // 3) refocus
+      SwingUtilities.invokeLater(
+          () -> view.getIoPanel(newIdx).getInputPane().requestFocusInWindow());
+    }
   }
 
   /** Shared evaluation logic */
@@ -67,6 +104,12 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
   // ActionListener → fires when user presses Enter
   @Override
   public void actionPerformed(ActionEvent e) {
+    if (e.getSource() instanceof InputPane) {
+      InputPane ip = (InputPane) e.getSource();
+      if (ip.getText().isEmpty()) {
+        return;
+      }
+    }
     int ind = model.getActiveBufIndex();
     if (ind >= 0) {
       model.deactivateBuffer(ind);

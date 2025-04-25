@@ -3,8 +3,10 @@ package model;
 import java.util.ArrayList;
 
 public class State {
-  private static ArrayList<Buffer> bufferList;
+  private ArrayList<Buffer> bufferList;
+
   private boolean degreeMode;
+
   private boolean largeFont;
 
   public State() {
@@ -13,10 +15,31 @@ public class State {
     largeFont = false;
   }
 
+  public void setDegreeMode(boolean b) {
+    degreeMode = b;
+  }
+
+  public boolean getDegreeMode() {
+    return degreeMode;
+  }
+
+  public void setLargeFont(boolean b) {
+    largeFont = b;
+  }
+
+  public boolean getLargeFont() {
+    return largeFont;
+  }
+
   public Buffer createBuffer(int index) {
     Buffer buf = new Buffer();
     bufferList.add(index, buf);
     return buf;
+  }
+
+  public Buffer removeBuffer(int index) {
+    Buffer b = bufferList.remove(index);
+    return b;
   }
 
   public void deactivateBuffers() {

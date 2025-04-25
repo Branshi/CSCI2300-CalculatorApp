@@ -6,6 +6,7 @@ import model.Buffer;
 import model.State;
 import view.IOPanel;
 import view.InputButton;
+import view.InputPane;
 import view.MainView;
 import view.OutputPane;
 
@@ -23,7 +24,6 @@ public class ButtonController implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    // 1) find the active buffer’s index
     int activeIndex = -1;
     for (int i = 0; i < model.getBuffers().size(); i++) {
       if (model.getBuffers().get(i).getActive()) {
@@ -31,25 +31,26 @@ public class ButtonController implements ActionListener {
         break;
       }
     }
-    if (activeIndex < 0) return; // no active buffer, bail out
+    if (activeIndex < 0) return;
 
-    // 2) grab the corresponding IOPanel
     IOPanel activePanel = view.getIoPanels().get(activeIndex);
 
     Buffer buf = model.getBuffers().get(activeIndex);
     String seq = button.getSequence();
-    String old = activePanel.getInputPane().getText();
-    String next;
+    InputPane tf = activePanel.getInputPane();
     if (seq.equals("ans")) {
-      next = old + handleAnswer();
-    } else {
-      next = old + seq;
+      seq = handleAnswer();
     }
-    // 3) push the new content back into your Buffer
+
+    int pos = tf.getCaretPosition();
+    String old = tf.getText();
+
+    String next = old.substring(0, pos) + seq + old.substring(pos);
+
+    tf.setText(next);
     buf.setContent(next);
 
-    // 4) append the button text to the input field
-    activePanel.getInputPane().setText(next);
+    tf.setCaretPosition(pos + seq.length());
   }
 
   private String handleAnswer() {

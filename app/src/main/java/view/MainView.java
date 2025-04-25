@@ -9,6 +9,7 @@ public class MainView extends JFrame {
   private JPanel displayPanel;
   private ArrayList<IOPanel> IoPanels;
   private JPanel numberPanel;
+  private JPanel headerPanel;
 
   public MainView() {
     super("Caltrix");
@@ -37,7 +38,8 @@ public class MainView extends JFrame {
   private void initButtonPanel() {
     // Set-Up buttonPanel
     buttonPanel = new JPanel();
-    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+    headerPanel = new JPanel();
     numberPanel = new JPanel();
     int numberPanelRows = 4;
     int numberPanelColumns = 4;
@@ -50,16 +52,28 @@ public class MainView extends JFrame {
       if (i == 14) numberPanel.add(new InputButton(String.valueOf(".")));
       if (i == 15) numberPanel.add(new InputButton(String.valueOf("ans")));
       if (i == 4) numberPanel.add(new InputButton("/"));
-      if (i == 8) numberPanel.add(new InputButton("x"));
+      if (i == 8) numberPanel.add(new InputButton("*"));
       if (i == 12) numberPanel.add(new InputButton("-"));
       if (i == 16) numberPanel.add(new InputButton("+"));
     }
+    headerPanel.add(new JButton("clear"));
+    headerPanel.add(new JButton("undo"));
+    headerPanel.add(new JButton("redo"));
+    headerPanel.add(new JButton("deg"));
+    headerPanel.add(new JButton("rad"));
+    buttonPanel.add(headerPanel);
     buttonPanel.add(numberPanel);
   }
 
   public IOPanel addIoPanel(int ind) {
     IOPanel pan = new IOPanel();
     IoPanels.add(ind, pan);
+    reinitDisplay();
+    return pan;
+  }
+
+  public IOPanel removeIoPanel(int ind) {
+    IOPanel pan = IoPanels.remove(ind);
     reinitDisplay();
     return pan;
   }
@@ -89,6 +103,10 @@ public class MainView extends JFrame {
 
   public JPanel getNumberPanel() {
     return numberPanel;
+  }
+
+  public JPanel getHeaderPanel() {
+    return headerPanel;
   }
 
   public void activate(int ind) {
