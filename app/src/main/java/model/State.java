@@ -1,8 +1,10 @@
 package model;
 
+import java.io.*;
 import java.util.ArrayList;
 
-public class State {
+public class State implements Serializable {
+  private static final long serialVersionUID = 1L;
   private ArrayList<Buffer> bufferList;
 
   private boolean degreeMode;
@@ -71,5 +73,19 @@ public class State {
 
   public ArrayList<Buffer> getBuffers() {
     return bufferList;
+  }
+
+  public void saveTo(String filePath) throws IOException {
+    try (FileOutputStream fos = new FileOutputStream(filePath);
+        ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+      oos.writeObject(this);
+    }
+  }
+
+  public static State loadFrom(String filePath) throws IOException, ClassNotFoundException {
+    try (FileInputStream fis = new FileInputStream(filePath);
+        ObjectInputStream ois = new ObjectInputStream(fis)) {
+      return (State) ois.readObject();
+    }
   }
 }

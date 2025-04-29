@@ -1,6 +1,8 @@
 package model;
 
-public class Buffer {
+import java.io.Serializable;
+
+public class Buffer implements Serializable {
 
   public static final int IN = 0;
   public static final int OUT = 1;

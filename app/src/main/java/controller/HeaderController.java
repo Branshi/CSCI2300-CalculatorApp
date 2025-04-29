@@ -3,7 +3,9 @@ package controller;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import model.Buffer;
 import model.State;
 import view.InputPane;
@@ -48,7 +50,21 @@ public class HeaderController implements ActionListener {
         break;
       case "redo":
         handleRedo();
+      case "save":
+        handleSave();
         break;
+    }
+  }
+
+  private void handleSave() {
+    String savePath = JOptionPane.showInputDialog(view, "Save state to:");
+    if (savePath != null && !savePath.trim().isEmpty()) {
+      try {
+        model.saveTo(savePath.trim());
+      } catch (IOException ex) {
+        JOptionPane.showMessageDialog(
+            view, "Failed to save: " + ex.getMessage(), "Save Error", JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
 

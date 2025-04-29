@@ -61,6 +61,7 @@ public class MainView extends JFrame {
     headerPanel.add(new JButton("redo"));
     headerPanel.add(new JButton("deg"));
     headerPanel.add(new JButton("rad"));
+    headerPanel.add(new JButton("save"));
     buttonPanel.add(headerPanel);
     buttonPanel.add(numberPanel);
   }
