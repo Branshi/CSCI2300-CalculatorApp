@@ -37,4 +37,14 @@ public class State {
   public ArrayList<Buffer> getBuffers() {
     return bufferList;
   }
+  //private boolean degreeMode = true; // default to DEG
+
+public void toggleMode() {
+    degreeMode = !degreeMode;
+}
+
+public boolean isDegreeMode() {
+    return degreeMode;
+}
+
 }

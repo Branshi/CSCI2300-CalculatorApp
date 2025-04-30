@@ -2,8 +2,10 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import model.Buffer;
 import model.State;
 import view.IOPanel;
@@ -26,7 +28,7 @@ public class PaneController implements DocumentListener, ActionListener {
     // 1) Listen for any text change
     panel.getInputPane().getDocument().addDocumentListener(this);
 
-    // 2) Listen for “Enter pressed”
+    // 2) Listen for "Enter pressed"
     panel.getInputPane().addActionListener(this);
   }
 
