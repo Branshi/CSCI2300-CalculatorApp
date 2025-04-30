@@ -1,10 +1,7 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
 /**
  * A panel container that holds both input and output components.
@@ -43,6 +40,19 @@ public class IOPanel extends JPanel {
         return input;
     }
 
+<<<<<<< HEAD
+    /**
+     * Returns the output pane component of this panel.
+     * 
+     * @return the OutputPane instance used for displaying output
+     */
+    public OutputPane getOutputPane() {
+        return output;
+    }
+=======
+  public InputPane getInputPane() {
+    return input;
+  }
 
   public OutputPane getOutputPane() {
     return output;
@@ -55,4 +65,5 @@ public class IOPanel extends JPanel {
   public void deactivate() {
     this.setBackground(Color.WHITE);
   }
+>>>>>>> e897d5d91c052598a014703145d845342cec5926
 }
