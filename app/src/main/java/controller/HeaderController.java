@@ -50,6 +50,7 @@ public class HeaderController implements ActionListener {
         break;
       case "redo":
         handleRedo();
+        break;
       case "save":
         handleSave();
         break;
@@ -88,10 +89,14 @@ public class HeaderController implements ActionListener {
 
   private void handleDegree() {
     model.setDegreeMode(true);
+    Evaluate.setDegreeMode(true);
+    view.updateDegreeMode(model.getDegreeMode());
   }
 
   private void handleRadian() {
     model.setDegreeMode(false);
+    Evaluate.setDegreeMode(false);
+    view.updateDegreeMode(model.getDegreeMode());
   }
 
   private void handleRedo() {}

@@ -50,10 +50,8 @@ public class Controller implements ActionListener {
       Buffer buf = model.getBuffers().get(i);
       IOPanel pan = view.addIoPanel(i);
 
-      // restore the text the user had
       pan.getInputPane().setText(buf.getContent());
 
-      // re-calc or restore the last output
       try {
         String out = String.valueOf(Evaluate.eval(buf.getContent()));
         pan.getOutputPane().setText(out);
@@ -61,10 +59,8 @@ public class Controller implements ActionListener {
         pan.getOutputPane().setText("");
       }
 
-      // connect controller so typing still works
       new PaneController(buf, pan, model, view);
 
-      // activate whichever buffer was active
       if (buf.getActive()) {
         view.activate(i);
       } else {

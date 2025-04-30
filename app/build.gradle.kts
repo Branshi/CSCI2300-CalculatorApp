@@ -19,7 +19,7 @@ repositories {
 dependencies {
   // This dependency is used by the application.
   implementation(libs.guava)
-  implementation("com.fathzer:javaluator:3.0.3")
+  implementation("org.mariuszgromada.math:MathParser.org-mXparser:5.2.1")
 }
 
 testing {

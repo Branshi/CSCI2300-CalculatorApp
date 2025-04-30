@@ -56,12 +56,14 @@ public class MainView extends JFrame {
       if (i == 12) numberPanel.add(new InputButton("-"));
       if (i == 16) numberPanel.add(new InputButton("+"));
     }
+
     headerPanel.add(new JButton("clear all"));
     headerPanel.add(new JButton("undo"));
     headerPanel.add(new JButton("redo"));
     headerPanel.add(new JButton("deg"));
     headerPanel.add(new JButton("rad"));
     headerPanel.add(new JButton("save"));
+
     buttonPanel.add(headerPanel);
     buttonPanel.add(numberPanel);
   }
@@ -125,6 +127,30 @@ public class MainView extends JFrame {
   public void deactivate(int ind) {
     IOPanel panelInactive = IoPanels.get(ind);
     panelInactive.deactivate();
+  }
+
+  public void updateDegreeMode(boolean deg) {
+    JButton degBtn = null, radBtn = null;
+    for (Component comp : headerPanel.getComponents()) {
+      if (!(comp instanceof JButton)) continue;
+      JButton b = (JButton) comp;
+      if (b.getText().equals("deg")) degBtn = b;
+      if (b.getText().equals("rad")) radBtn = b;
+    }
+    Color defaultBg = UIManager.getColor("Button.background");
+    if (deg) {
+      degBtn.setOpaque(true);
+      degBtn.setBackground(Color.RED);
+      radBtn.setOpaque(true);
+      radBtn.setBackground(defaultBg);
+    } else {
+      radBtn.setOpaque(true);
+      radBtn.setBackground(Color.RED);
+      degBtn.setOpaque(true);
+      degBtn.setBackground(defaultBg);
+    }
+    headerPanel.revalidate();
+    headerPanel.repaint();
   }
 
   public ArrayList<IOPanel> getIoPanels() {
