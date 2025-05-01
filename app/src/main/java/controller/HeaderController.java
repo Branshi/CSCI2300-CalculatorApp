@@ -40,17 +40,11 @@ public class HeaderController implements ActionListener {
       case "clear":
         handleClear();
         break;
-      case "deg":
+      case "degree":
         handleDegree();
         break;
-      case "rad":
+      case "radian":
         handleRadian();
-        break;
-      case "undo":
-        handleUndo();
-        break;
-      case "redo":
-        handleRedo();
         break;
       case "save":
         handleSave();
@@ -92,7 +86,6 @@ public class HeaderController implements ActionListener {
   public void reEvalPanels() {
     for (IOPanel panel : view.getIoPanels()) {
       try {
-        if (panel.getInputPane().getText().isEmpty()) continue;
         String out =
             String.valueOf(
                 Evaluate.eval(
@@ -117,8 +110,4 @@ public class HeaderController implements ActionListener {
     view.updateDegreeMode(model.getDegreeMode());
     this.reEvalPanels();
   }
-
-  private void handleRedo() {}
-
-  private void handleUndo() {}
 }

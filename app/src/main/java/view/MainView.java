@@ -41,6 +41,7 @@ public class MainView extends JFrame {
     mainPanel.setBorder(b);
     initDisplayPanel();
     initButtonPanel();
+    initButtons();
     // Add Components
     mainPanel.add(displayScroll);
     mainPanel.add(buttonPanel);
@@ -94,7 +95,9 @@ public class MainView extends JFrame {
 
     int numberPanelRows = 4;
     int numberPanelColumns = 4;
-    numberPanel.setLayout(new GridLayout(numberPanelRows, numberPanelColumns));
+    int gap = 8;
+    numberPanel.setLayout(new GridLayout(numberPanelRows, numberPanelColumns, gap, gap));
+    numberPanel.setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
     for (int i = 1; i <= 16; i++) {
       if ((i / 4 == 0) && (i % 4 != 0)) numberPanel.add(new InputButton(String.valueOf(i + 6)));
       if ((i / 4 == 1) && (i % 4 != 0)) numberPanel.add(new InputButton(String.valueOf(i - 1)));
@@ -109,10 +112,8 @@ public class MainView extends JFrame {
     }
 
     headerPanel.add(new JButton("clear all"));
-    headerPanel.add(new JButton("undo"));
-    headerPanel.add(new JButton("redo"));
-    headerPanel.add(new JButton("deg"));
-    headerPanel.add(new JButton("rad"));
+    headerPanel.add(new JButton("degree"));
+    headerPanel.add(new JButton("radian"));
     headerPanel.add(new JButton("save"));
 
     buttonPanel.add(headerPanel);
@@ -128,6 +129,7 @@ public class MainView extends JFrame {
     headerPanel.setPreferredSize(new Dimension(800, 50));
     headerPanel.setMaximumSize(headerPanel.getPreferredSize());
 
+    numberPanel.setName("headerPanel");
     numberPanel.setPreferredSize(new Dimension(800, 200));
     numberPanel.setMaximumSize(headerPanel.getPreferredSize());
   }
@@ -145,6 +147,18 @@ public class MainView extends JFrame {
     return pan;
   }
 
+  public void initButtons() {
+    for (Component c : numberPanel.getComponents()) {
+      if (c instanceof InputButton) {
+        InputButton button = (InputButton) c;
+        button.setPreferredSize(new Dimension(20, 30));
+        button.setMaximumSize(new Dimension(20, 30));
+        Border b = BorderFactory.createLineBorder(ThemeManager.getTheme().getBackgroundXDark(), 1);
+        button.setBorder(b);
+      }
+    }
+  }
+
   public void clearIoPanels() {
     IoPanels.subList(0, IoPanels.size() - 1).clear();
     IoPanels.get(0).getInputPane().setText("");
@@ -155,8 +169,6 @@ public class MainView extends JFrame {
   public IOPanel getIoPanel(int ind) {
     return IoPanels.get(ind);
   }
-
-  public void sizeButtons() {}
 
   private void reinitDisplay() {
 
@@ -200,19 +212,18 @@ public class MainView extends JFrame {
     for (Component comp : headerPanel.getComponents()) {
       if (!(comp instanceof JButton)) continue;
       JButton b = (JButton) comp;
-      if (b.getText().equals("deg")) degBtn = b;
-      if (b.getText().equals("rad")) radBtn = b;
+      if (b.getText().equals("degree")) degBtn = b;
+      if (b.getText().equals("radian")) radBtn = b;
     }
+    Border def = BorderFactory.createLineBorder(ThemeManager.getTheme().getBackgroundXDark(), 1);
+    Border selected = BorderFactory.createLineBorder(ThemeManager.getTheme().getWarning(), 1);
+
     if (deg) {
-      degBtn.setOpaque(true);
-      degBtn.setBackground(ThemeManager.getTheme().getSecondary());
-      radBtn.setOpaque(true);
-      radBtn.setBackground(ThemeManager.getTheme().getBackgroundMed());
+      degBtn.setBorder(selected);
+      radBtn.setBorder(def);
     } else {
-      radBtn.setOpaque(true);
-      radBtn.setBackground(ThemeManager.getTheme().getSecondary());
-      degBtn.setOpaque(true);
-      degBtn.setBackground(ThemeManager.getTheme().getBackgroundMed());
+      radBtn.setBorder(selected);
+      degBtn.setBorder(def);
     }
     headerPanel.revalidate();
     headerPanel.repaint();

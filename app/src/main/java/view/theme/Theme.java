@@ -38,7 +38,9 @@ public interface Theme {
     if (root instanceof JComponent) {
       ((JComponent) root).setFont(mathFont);
     }
-    if ("buttonPanel".equals(root.getName()) || "headerPanel".equals(root.getName())) {
+    if ("buttonPanel".equals(root.getName())
+        || "headerPanel".equals(root.getName())
+        || "numberPanel".equals(root.getName())) {
       root.setBackground(getBackgroundMed()); // whatever extra color you want
       ((JComponent) root).setOpaque(true);
     } else if (root instanceof IOPanel) {
@@ -53,7 +55,7 @@ public interface Theme {
         ((JComponent) c).setFont(mathFont);
       }
       if (c instanceof JButton) {
-        c.setBackground(getBackgroundMed());
+        c.setBackground(getBackgroundDark());
         c.setForeground(getForeground());
         ((JButton) c)
             .setBorder(BorderFactory.createLineBorder(ThemeManager.getTheme().getBackgroundMed()));
