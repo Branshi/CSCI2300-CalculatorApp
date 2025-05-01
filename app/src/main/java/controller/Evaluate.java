@@ -29,6 +29,9 @@ public final class Evaluate {
    * @throws IllegalArgumentException if the expression is malformed
    */
   public static double eval(String expr) {
+    if (expr.isEmpty()) {
+      throw new IllegalArgumentException("");
+    }
     Expression e = new Expression(expr);
     double result = e.calculate();
     if (Double.isNaN(result)) {

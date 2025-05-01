@@ -2,6 +2,8 @@ package view;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.Border;
+import view.theme.ThemeManager;
 
 public class IOPanel extends JPanel {
   private InputPane input;
@@ -10,13 +12,22 @@ public class IOPanel extends JPanel {
   public IOPanel() {
     super();
 
-    this.setPreferredSize(new Dimension(800, 100));
-    this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+    // lock the height but let width float to container:
+    Dimension pref = new Dimension(800, 100);
+    setPreferredSize(pref);
+    setMaximumSize(new Dimension(pref.width, pref.height));
+
+    // THIS is key — align to the left so BoxLayout gives you the full width:
+    setAlignmentX(Component.LEFT_ALIGNMENT);
+
+    // your existing layout + children…
+    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     input = new InputPane();
     output = new OutputPane();
+    add(input);
+    add(output);
 
-    this.add(input);
-    this.add(output);
+    ThemeManager.getTheme().applyTo(this);
   }
 
   public InputPane getInputPane() {
@@ -28,10 +39,22 @@ public class IOPanel extends JPanel {
   }
 
   public void activate() {
-    this.setBackground(Color.RED);
+    Border b = BorderFactory.createLineBorder(ThemeManager.getTheme().getPrimary(), 2);
+    setBorder(b);
+    setMaximumSize(
+        new Dimension(
+            getPreferredSize().width - b.getBorderInsets(this).right / 2,
+            getPreferredSize().height));
   }
 
   public void deactivate() {
-    this.setBackground(Color.WHITE);
+    Color c = ThemeManager.getTheme().getBackgroundXDark();
+    // top, left, bottom, right
+    Border topOnly = BorderFactory.createMatteBorder(1, 0, 0, 0, c);
+    setBorder(topOnly);
+
+    // lock height but allow width to fill
+    Dimension pref = getPreferredSize();
+    setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
   }
 }

@@ -13,7 +13,7 @@ public class State implements Serializable {
 
   public State() {
     bufferList = new ArrayList<Buffer>();
-    degreeMode = true;
+    degreeMode = false;
     largeFont = false;
   }
 

@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import model.Buffer;
 import model.State;
+import view.IOPanel;
 import view.InputPane;
 import view.MainView;
 
@@ -87,16 +88,34 @@ public class HeaderController implements ActionListener {
     buf.setContent("");
   }
 
+  // updates output of panels when mode is switched
+  public void reEvalPanels() {
+    for (IOPanel panel : view.getIoPanels()) {
+      try {
+        if (panel.getInputPane().getText().isEmpty()) continue;
+        String out =
+            String.valueOf(
+                Evaluate.eval(
+                    model.getBuffers().get(view.getIoPanels().indexOf(panel)).getContent()));
+        panel.getOutputPane().setText(out);
+      } catch (IllegalArgumentException ex) {
+        panel.getOutputPane().setText(ex.getMessage());
+      }
+    }
+  }
+
   private void handleDegree() {
     model.setDegreeMode(true);
     Evaluate.setDegreeMode(true);
     view.updateDegreeMode(model.getDegreeMode());
+    this.reEvalPanels();
   }
 
   private void handleRadian() {
     model.setDegreeMode(false);
     Evaluate.setDegreeMode(false);
     view.updateDegreeMode(model.getDegreeMode());
+    this.reEvalPanels();
   }
 
   private void handleRedo() {}

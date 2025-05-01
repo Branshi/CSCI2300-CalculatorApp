@@ -3,10 +3,14 @@ package view;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.Border;
+import view.theme.ThemeManager;
 
 public class MainView extends JFrame {
+  private JPanel mainPanel;
   private JPanel buttonPanel;
-  private JPanel displayPanel;
+  private JPanel displayContainer;
+  private JScrollPane displayScroll;
   private ArrayList<IOPanel> IoPanels;
   private JPanel numberPanel;
   private JPanel headerPanel;
@@ -15,24 +19,70 @@ public class MainView extends JFrame {
     super("Caltrix");
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     Container cp = getContentPane();
-    cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
+    cp.setLayout(new BorderLayout());
+    cp.setMaximumSize(new Dimension(1800, 1800));
+    cp.setPreferredSize(new Dimension(1800, 1800));
     // Initlize App Sections
+    mainPanel =
+        new JPanel() {
+          @Override
+          public Dimension getPreferredSize() {
+            return new Dimension(800, 700);
+          }
+
+          @Override
+          public Dimension getMaximumSize() {
+            return getPreferredSize();
+          }
+        };
+    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+    mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    Border b = BorderFactory.createLineBorder(ThemeManager.getTheme().getBackgroundXDark(), 1);
+    mainPanel.setBorder(b);
     initDisplayPanel();
     initButtonPanel();
     // Add Components
-    cp.add(displayPanel);
-    cp.add(buttonPanel);
+    mainPanel.add(displayScroll);
+    mainPanel.add(buttonPanel);
+
+    JPanel centerWrapper = new JPanel(new GridBagLayout());
+    centerWrapper.add(mainPanel); // this will center mainPanel both axes
+    cp.add(centerWrapper, BorderLayout.CENTER);
+
+    initTheme();
     pack();
     setLocationRelativeTo(null);
     this.setVisible(true);
   }
 
+  public void initTheme() {
+    ThemeManager.getTheme().applyTo(getContentPane());
+    ThemeManager.onChange(
+        theme ->
+            // always repaint on the Swing EDT:
+            SwingUtilities.invokeLater(
+                () -> {
+                  theme.applyTo(getContentPane());
+                  revalidate();
+                  repaint();
+                }));
+  }
+
   private void initDisplayPanel() {
-    // Set-Uo displayPanel
-    displayPanel = new JPanel();
-    displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
+    // Set-Uo displayContainer
+    displayContainer = new JPanel();
+    displayContainer.setLayout(new BoxLayout(displayContainer, BoxLayout.Y_AXIS));
     // Setting up IoPanels
     IoPanels = new ArrayList<IOPanel>();
+    displayContainer.add(Box.createVerticalGlue());
+    displayScroll = new JScrollPane(displayContainer);
+    displayScroll.setBorder(null); // optional: remove default border
+    displayScroll.setPreferredSize(new Dimension(800, 550));
+    displayScroll.setMaximumSize(displayScroll.getPreferredSize());
+    displayScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+    displayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    displayContainer.setMaximumSize(
+        new Dimension(displayScroll.getPreferredSize().width, Short.MAX_VALUE));
   }
 
   private void initButtonPanel() {
@@ -41,6 +91,7 @@ public class MainView extends JFrame {
     buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
     headerPanel = new JPanel();
     numberPanel = new JPanel();
+
     int numberPanelRows = 4;
     int numberPanelColumns = 4;
     numberPanel.setLayout(new GridLayout(numberPanelRows, numberPanelColumns));
@@ -66,6 +117,19 @@ public class MainView extends JFrame {
 
     buttonPanel.add(headerPanel);
     buttonPanel.add(numberPanel);
+
+    buttonPanel.setName("buttonPanel");
+    buttonPanel.setPreferredSize(new Dimension(800, 250));
+    buttonPanel.setMaximumSize(buttonPanel.getPreferredSize());
+    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+    buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    headerPanel.setName("headerPanel");
+    headerPanel.setPreferredSize(new Dimension(800, 50));
+    headerPanel.setMaximumSize(headerPanel.getPreferredSize());
+
+    numberPanel.setPreferredSize(new Dimension(800, 200));
+    numberPanel.setMaximumSize(headerPanel.getPreferredSize());
   }
 
   public IOPanel addIoPanel(int ind) {
@@ -94,14 +158,14 @@ public class MainView extends JFrame {
 
   private void reinitDisplay() {
 
-    displayPanel.removeAll();
-
+    displayContainer.removeAll();
+    displayContainer.add(Box.createVerticalGlue());
     for (int i = 0; i < IoPanels.size(); ++i) {
-      displayPanel.add(IoPanels.get(i));
+      displayContainer.add(IoPanels.get(i));
     }
 
-    displayPanel.revalidate();
-    displayPanel.repaint();
+    displayContainer.revalidate();
+    displayContainer.repaint();
     pack();
   }
 
@@ -137,17 +201,16 @@ public class MainView extends JFrame {
       if (b.getText().equals("deg")) degBtn = b;
       if (b.getText().equals("rad")) radBtn = b;
     }
-    Color defaultBg = UIManager.getColor("Button.background");
     if (deg) {
       degBtn.setOpaque(true);
-      degBtn.setBackground(Color.RED);
+      degBtn.setBackground(ThemeManager.getTheme().getSecondary());
       radBtn.setOpaque(true);
-      radBtn.setBackground(defaultBg);
+      radBtn.setBackground(ThemeManager.getTheme().getBackgroundMed());
     } else {
       radBtn.setOpaque(true);
-      radBtn.setBackground(Color.RED);
+      radBtn.setBackground(ThemeManager.getTheme().getSecondary());
       degBtn.setOpaque(true);
-      degBtn.setBackground(defaultBg);
+      degBtn.setBackground(ThemeManager.getTheme().getBackgroundMed());
     }
     headerPanel.revalidate();
     headerPanel.repaint();

@@ -1,12 +1,18 @@
 package controller;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.*;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -16,6 +22,7 @@ import model.State;
 import view.IOPanel;
 import view.InputPane;
 import view.MainView;
+import view.theme.*;
 
 // wherever your eval method lives
 
@@ -85,6 +92,26 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
     }
   }
 
+  /**
+   * Returns a new ImageIcon which is the same shape/alpha as the original, but tinted entirely to
+   * the given color.
+   */
+  public static ImageIcon tint(ImageIcon srcIcon, Color tint) {
+    int w = srcIcon.getIconWidth();
+    int h = srcIcon.getIconHeight();
+    // create an ARGB image in which to draw
+    BufferedImage buf = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g = buf.createGraphics();
+    // draw the original icon (so its alpha channel is in place)
+    srcIcon.paintIcon(null, g, 0, 0);
+    // now apply the tint: only the non-transparent pixels get recolored
+    g.setComposite(AlphaComposite.SrcAtop);
+    g.setColor(tint);
+    g.fillRect(0, 0, w, h);
+    g.dispose();
+    return new ImageIcon(buf);
+  }
+
   private void updateClearButton(String text) {
     if (text == null || text.isEmpty()) {
       clearButton.setText("clear all");
@@ -100,9 +127,25 @@ public class PaneController implements DocumentListener, ActionListener, FocusLi
     this.updateClearButton(buffer.getContent());
     try {
       String out = String.valueOf(Evaluate.eval(buffer.getContent()));
+      panel.getOutputPane().setIcon(null);
       panel.getOutputPane().setText(out);
     } catch (IllegalArgumentException ex) {
-      panel.getOutputPane().setText(ex.getMessage());
+      if (ex.getMessage().isEmpty()) {
+        panel.getOutputPane().setText("");
+        panel.getOutputPane().setIcon(null);
+      } else {
+        panel.getOutputPane().setText("");
+        ImageIcon raw = new ImageIcon(getClass().getResource("/error.png"));
+        // tint it to your theme’s error or warning color:
+        ImageIcon original = tint(raw, ThemeManager.getTheme().getError());
+
+        Image img = original.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+
+        // Wrap it back in an ImageIcon
+        ImageIcon scaledIcon = new ImageIcon(img);
+
+        panel.getOutputPane().setIcon(scaledIcon);
+      }
     }
   }
 

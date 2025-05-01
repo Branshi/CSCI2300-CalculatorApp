@@ -31,6 +31,7 @@ public class Controller implements ActionListener {
     } else {
       this.restore();
     }
+    view.updateDegreeMode(model.getDegreeMode());
   }
 
   public void initButtonController() {
@@ -65,6 +66,20 @@ public class Controller implements ActionListener {
         view.activate(i);
       } else {
         view.deactivate(i);
+      }
+    }
+  }
+
+  public void reEvalPanels() {
+    for (IOPanel panel : view.getIoPanels()) {
+      try {
+        String out =
+            String.valueOf(
+                Evaluate.eval(
+                    model.getBuffers().get(view.getIoPanels().indexOf(panel)).getContent()));
+        panel.getOutputPane().setText(out);
+      } catch (IllegalArgumentException ex) {
+        panel.getOutputPane().setText(ex.getMessage());
       }
     }
   }
