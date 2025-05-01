@@ -1,6 +1,8 @@
 package controller;
 
+import java.awt.Font;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import model.State;
 import view.MainView;
 
@@ -27,6 +29,16 @@ public class App {
     } else {
       appState = new State();
     }
+
+    Font uiFont = new Font("JetBrains Mono", Font.PLAIN, 16);
+
+    UIManager.put("Button.font", uiFont);
+    UIManager.put("ToggleButton.font", uiFont);
+    UIManager.put("Label.font", uiFont);
+    UIManager.put("TextField.font", uiFont);
+    UIManager.put("TextPane.font", uiFont);
+    UIManager.put("OptionPane.messageFont", uiFont);
+    UIManager.put("TabbedPane.font", uiFont);
 
     MainView appView = new MainView();
     new Controller(appState, appView);

@@ -13,6 +13,7 @@ public class Buffer implements Serializable {
 
   public Buffer() {
     active = false;
+    content = "";
   }
 
   public Buffer(String input) {

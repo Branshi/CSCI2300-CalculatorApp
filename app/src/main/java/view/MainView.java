@@ -156,6 +156,8 @@ public class MainView extends JFrame {
     return IoPanels.get(ind);
   }
 
+  public void sizeButtons() {}
+
   private void reinitDisplay() {
 
     displayContainer.removeAll();
