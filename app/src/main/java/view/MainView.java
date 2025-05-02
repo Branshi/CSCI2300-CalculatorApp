@@ -82,6 +82,10 @@ public class MainView extends JFrame {
     displayScroll.setMaximumSize(displayScroll.getPreferredSize());
     displayScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
     displayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    // never show the vertical bar…
+    displayScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    // …but keep wheel‐scrolling on
+    displayScroll.setWheelScrollingEnabled(true);
     displayContainer.setMaximumSize(
         new Dimension(displayScroll.getPreferredSize().width, Short.MAX_VALUE));
   }

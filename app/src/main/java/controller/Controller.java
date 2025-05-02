@@ -70,20 +70,6 @@ public class Controller implements ActionListener {
     }
   }
 
-  public void reEvalPanels() {
-    for (IOPanel panel : view.getIoPanels()) {
-      try {
-        String out =
-            String.valueOf(
-                Evaluate.eval(
-                    model.getBuffers().get(view.getIoPanels().indexOf(panel)).getContent()));
-        panel.getOutputPane().setText(out);
-      } catch (IllegalArgumentException ex) {
-        panel.getOutputPane().setText(ex.getMessage());
-      }
-    }
-  }
-
   @Override
   public void actionPerformed(ActionEvent e) {}
 }
